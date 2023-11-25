@@ -22,7 +22,9 @@ class ChallengeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'capacity_x' => 'required|integer|min:1',
+            'capacity_y' => 'required|integer|min:1',
+
         ];
     }
 }
