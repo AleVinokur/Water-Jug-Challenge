@@ -7,45 +7,61 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Post(
- *     path="/api/water-jug-challenge",
- *     tags={"Water Jug Challenge"},
- *     summary="Solve the Water Jug Challenge",
- *     operationId="waterJugChallenge",
- *     @OA\RequestBody(
- *         required=true,
- *         description="JSON payload for the Water Jug Challenge",
- *         @OA\JsonContent(
- *             required={"bucket_x", "bucket_y", "measure_z"},
- *             @OA\Property(property="bucket_x", type="integer", example=10),
- *             @OA\Property(property="bucket_y", type="integer", example=2),
- *             @OA\Property(property="measure_z", type="integer", example=4),
- *         ),
+ * @OA\Info(
+ *     title="Water Jug Challenge API",
+ *     version="1.0.0",
+ *     description="API for solving the Water Jug Challenge",
+ *     @OA\Contact(
+ *         email="your-email@example.com",
+ *         name="Your Name"
  *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful response with the solution",
- *         @OA\JsonContent(
- *             @OA\Property(property="solution", type="array", @OA\Items(
- *                 @OA\Property(property="Action", type="string"),
- *                 @OA\Property(property="X", type="integer"),
- *                 @OA\Property(property="Y", type="integer"),
- *             )),
- *         ),
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="No solution found",
- *         @OA\JsonContent(
- *             @OA\Property(property="solution", type="string", example="No Solution"),
- *         ),
- *     ),
+ *     @OA\License(
+ *         name="MIT",
+ *         url="https://opensource.org/licenses/MIT"
+ *     )
  * )
  */
 
-
 class JugController extends Controller
 {
+
+    /**
+     * @OA\Post(
+     *     path="/api/water-jug-challenge",
+     *     tags={"Water Jug Challenge"},
+     *     summary="Solve the Water Jug Challenge",
+     *     operationId="waterJugChallenge",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="JSON payload for the Water Jug Challenge",
+     *         @OA\JsonContent(
+     *             required={"bucket_x", "bucket_y", "measure_z"},
+     *             @OA\Property(property="bucket_x", type="integer", example=10),
+     *             @OA\Property(property="bucket_y", type="integer", example=2),
+     *             @OA\Property(property="measure_z", type="integer", example=4),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response with the solution",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="solution", type="array", @OA\Items(
+     *                 @OA\Property(property="Action", type="string"),
+     *                 @OA\Property(property="X", type="integer"),
+     *                 @OA\Property(property="Y", type="integer"),
+     *             )),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No solution found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="solution", type="string", example="No Solution"),
+     *         ),
+     *     ),
+     * )
+     */
+
     public function waterJugChallenge(Request $request)
     {
         $bucketX = $request->input('bucket_x');

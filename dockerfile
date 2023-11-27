@@ -5,19 +5,21 @@ FROM php:8.1-apache
 RUN a2enmod rewrite
 
 # Install PHP extensions required for Laravel
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql mysqli \
+    && apt-get update \
+    && apt-get install -y \
+    libzip-dev \
+    git \
+    && docker-php-ext-install zip
 
-# Configure the mysqli extension
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-# Copy application files to the image
-COPY . /var/www/html
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Set the working directory
 WORKDIR /var/www/html
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copy application files to the image
+COPY . /var/www/html
 
 # Install Composer dependencies
 RUN composer install

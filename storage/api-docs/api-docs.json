@@ -1,0 +1,104 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Water Jug Challenge API",
+        "description": "API for solving the Water Jug Challenge",
+        "contact": {
+            "name": "Your Name",
+            "email": "your-email@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/water-jug-challenge": {
+            "post": {
+                "tags": [
+                    "Water Jug Challenge"
+                ],
+                "summary": "Solve the Water Jug Challenge",
+                "operationId": "waterJugChallenge",
+                "requestBody": {
+                    "description": "JSON payload for the Water Jug Challenge",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "bucket_x",
+                                    "bucket_y",
+                                    "measure_z"
+                                ],
+                                "properties": {
+                                    "bucket_x": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "bucket_y": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "measure_z": {
+                                        "type": "integer",
+                                        "example": 4
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the solution",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "solution": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "Action": {
+                                                        "type": "string"
+                                                    },
+                                                    "X": {
+                                                        "type": "integer"
+                                                    },
+                                                    "Y": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No solution found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "solution": {
+                                            "type": "string",
+                                            "example": "No Solution"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
