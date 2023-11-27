@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChallengeRequest;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
@@ -62,7 +63,7 @@ class JugController extends Controller
      * )
      */
 
-    public function waterJugChallenge(Request $request)
+    public function waterJugChallenge(ChallengeRequest $request)
     {
         $bucketX = $request->input('bucket_x');
         $bucketY = $request->input('bucket_y');
