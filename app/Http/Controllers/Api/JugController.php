@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChallengeRequest;
 use Illuminate\Http\Request;
 
 class JugController extends Controller
@@ -14,92 +13,87 @@ class JugController extends Controller
         $bucketY = $request->input('bucket_y');
         $measureZ = $request->input('measure_z');
 
-        // Algoritmo DFS para resolver el Water Jug Challenge
-        $solution = $this->solveWaterJugChallenge($bucketX, $bucketY, $measureZ);
+        $result = $this->bfs($bucketX, $bucketY, $measureZ);
 
-        if ($solution) {
-            return response()->json(['solution' => $solution]);
-        } else {
-            return response()->json(['message' => 'No Solution'], 404);
-        }
+        return response()->json(['solution' => $result]);
     }
 
-    /**
-     * Método para resolver el Water Jug Challenge utilizando DFS.
-     *
-     * @param int $bucketX Capacidad del cubo X.
-     * @param int $bucketY Capacidad del cubo Y.
-     * @param int $measureZ Medida objetivo Z.
-     * @param array $visited Estados visitados para evitar bucles infinitos.
-     * @return array|bool Solución o false si no hay solución.
-     */
-    private function solveWaterJugChallenge($bucketX, $bucketY, $measureZ, $visited = [])
+    private function bfs($bucketX, $bucketY, $measureZ)
     {
-        // Estado actual
-        $state = [$bucketX, $bucketY];
+        $queue = new \SplQueue();
+        $visited = [];
 
-        // Verificar si hemos llegado a la medida objetivo
-        if ($state[0] == $measureZ || $state[1] == $measureZ || $state[0] + $state[1] == $measureZ) {
-            return [$state];
-        }
+        // Initial state (both jugs empty)
+        $initialState = [0, 0];
+        $queue->enqueue([$initialState, []]);
 
-        // Marcar este estado como visitado
-        $visited[] = $state;
+        while (!$queue->isEmpty()) {
+            list($currentState, $steps) = $queue->dequeue();
 
-        // Definir las acciones permitidas: FILL, EMPTY, TRANSFER
-        $actions = ['FILL_X', 'FILL_Y', 'EMPTY_X', 'EMPTY_Y', 'TRANSFER_X_TO_Y', 'TRANSFER_Y_TO_X'];
+            if ($currentState[0] == $measureZ || $currentState[1] == $measureZ) {
+                return $this->formatSolution($steps); // Cambio aquí
+            }
 
-        foreach ($actions as $action) {
-            // Aplicar la acción y obtener el próximo estado
-            $nextState = $this->applyAction($state, $action, $bucketX, $bucketY);
+            $nextStates = $this->generateNextStates($currentState, $bucketX, $bucketY);
 
-            // Verificar si el próximo estado es válido y no ha sido visitado
-            if ($nextState && !in_array($nextState, $visited, true)) {
-                // Recursivamente intentar encontrar una solución desde el próximo estado
-                $solution = $this->solveWaterJugChallenge($nextState[0], $nextState[1], $measureZ, $visited);
-
-                // Si se encuentra una solución, agregar el estado actual y devolver la solución
-                if ($solution !== false) {
-                    array_unshift($solution, $state);
-                    return $solution;
+            foreach ($nextStates as $nextState) {
+                if (!isset($visited[$nextState[0]][$nextState[1]])) {
+                    $visited[$nextState[0]][$nextState[1]] = true;
+                    $queue->enqueue([$nextState, array_merge($steps, [$nextState])]);
                 }
             }
         }
 
-        // No se encontró ninguna solución desde este estado
-        return false;
+        // No solution found
+        return 'No Solution';
     }
 
-    /**
-     * Método para aplicar una acción al estado actual de los cubos.
-     *
-     * @param array $state Estado actual de los cubos.
-     * @param string $action Acción a aplicar (FILL_X, FILL_Y, EMPTY_X, EMPTY_Y, TRANSFER_X_TO_Y, TRANSFER_Y_TO_X).
-     * @param int $bucketX Capacidad del cubo X.
-     * @param int $bucketY Capacidad del cubo Y.
-     * @return array|bool Nuevo estado después de aplicar la acción o false si la acción no es válida.
-     */
-    private function applyAction($state, $action, $bucketX, $bucketY)
+    private function generateNextStates($currentState, $bucketX, $bucketY)
     {
-        switch ($action) {
-            case 'FILL_X':
-                return [$bucketX, $state[1]];
-            case 'FILL_Y':
-                return [$state[0], $bucketY];
-            case 'EMPTY_X':
-                return [0, $state[1]];
-            case 'EMPTY_Y':
-                return [$state[0], 0];
-            case 'TRANSFER_X_TO_Y':
-                $remainingY = $bucketY - $state[1];
-                $amountToTransfer = min($state[0], $remainingY);
-                return [$state[0] - $amountToTransfer, $state[1] + $amountToTransfer];
-            case 'TRANSFER_Y_TO_X':
-                $remainingX = $bucketX - $state[0];
-                $amountToTransfer = min($state[1], $remainingX);
-                return [$state[0] + $amountToTransfer, $state[1] - $amountToTransfer];
-            default:
-                return false;
+        $nextStates = [];
+
+        // Define actions for better clarity
+        $actions = [
+            'Fill bucket X', 'Fill bucket Y', 'Empty bucket X', 'Empty bucket Y', 'Transfer bucket X to bucket Y', 'Transfer bucket Y to bucket X'
+        ];
+
+        // FILL Bucket X
+        $nextStates[] = [$bucketX, $currentState[1], $actions[0]];
+
+        // FILL Bucket Y
+        $nextStates[] = [$currentState[0], $bucketY, $actions[1]];
+
+        // EMPTY Bucket X
+        $nextStates[] = [0, $currentState[1], $actions[2]];
+
+        // EMPTY Bucket Y
+        $nextStates[] = [$currentState[0], 0, $actions[3]];
+
+        // TRANSFER Bucket X to Bucket Y
+        $transferXY = min($currentState[0], $bucketY - $currentState[1]);
+        $nextStates[] = [$currentState[0] - $transferXY, $currentState[1] + $transferXY, $actions[4]];
+
+        // TRANSFER Bucket Y to Bucket X
+        $transferYX = min($bucketX - $currentState[0], $currentState[1]);
+        $nextStates[] = [$currentState[0] + $transferYX, $currentState[1] - $transferYX, $actions[5]];
+
+        return $nextStates;
+    }
+
+    private function formatSolution($steps)
+    {
+        $formattedSteps = [];
+
+        foreach ($steps as $step) {
+            $formattedStep = [
+                'Action' => end($step),
+                'X' => $step[0],
+                'Y' => $step[1],
+            ];
+
+            $formattedSteps[] = $formattedStep;
         }
+
+        return $formattedSteps;
     }
 }
