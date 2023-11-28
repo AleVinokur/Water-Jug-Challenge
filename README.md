@@ -4,6 +4,18 @@ This project solves the Water Jug Challenge, allowing you to find the optimal so
 
 ## How It Works
 
+### Input Validation
+
+The API performs input validation to ensure the correctness of the provided data. Here are the validation rules for each input:
+
+- `Bucket X`: Must be an integer greater than or equal to 1.
+- `Bucket Y`: Must be an integer greater than or equal to 1.
+- `Measure Z`: Must be an integer greater than or equal to 1.
+
+If the input data fails to meet these requirements, the server responds with a 400 Bad Request status code and provides detailed messages about the validation errors.
+
+### Water Jug Challenge Solution
+
 The solution is implemented using a Breadth-First Search (BFS) algorithm, which systematically explores all possible states until it finds the goal state. Here's a brief overview of the algorithm:
 
 1. **Initialization**: Start with the initial state, where both jugs are empty.
