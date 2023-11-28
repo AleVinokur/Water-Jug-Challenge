@@ -1,0 +1,28 @@
+{
+	"info": {
+		"_postman_id": "23e1115b-f8af-4834-a2b0-c10d9456d2c5",
+		"name": "Water Bucket Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31401507"
+	},
+	"item": [
+		{
+			"name": "POST  WJC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bucket_x\" : 3,\n    \"bucket_y\" : 5,\n    \"measure_z\" : 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/water-jug-challenge"
+			},
+			"response": []
+		}
+	]
+}

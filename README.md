@@ -29,7 +29,7 @@ The solution is implemented using a Breadth-First Search (BFS) algorithm, which 
 
 ## Requirements
 
-- Docker
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
 ## Usage
 
@@ -77,3 +77,7 @@ measure_z (integer): Desired target.
 ## Swagger Documentation
 
 Explore and test the API directly from the Swagger interface available at http://localhost:8080/api/documentation.
+
+## Test API in Postman
+
+- [Download Postman](https://www.postman.com/downloads/)
