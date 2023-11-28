@@ -80,4 +80,11 @@ Explore and test the API directly from the Swagger interface available at http:/
 
 ## Test API in Postman
 
-- [Download Postman](https://www.postman.com/downloads/)
+- Don't have Postman yet? Download it [here](https://www.postman.com/downloads/).
+- [Download the Postman collection](https://github.com/AleVinokur/Water-Jug-Challenge/blob/main/Water%20Bucket%20Challenge.postman_collection.json)
+- Import the collection into Postman.
+- Use the provided examples to make requests to the API and view the results.
+
+
+
+# Enjoy solving the Water Jug Challenge!
