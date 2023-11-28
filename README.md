@@ -85,6 +85,4 @@ Explore and test the API directly from the Swagger interface available at http:/
 - Import the collection into Postman.
 - Use the provided examples to make requests to the API and view the results.
 
-
-
-# Enjoy solving the Water Jug Challenge!
+Enjoy solving the Water Jug Challenge!

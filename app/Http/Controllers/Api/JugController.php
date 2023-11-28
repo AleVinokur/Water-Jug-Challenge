@@ -13,8 +13,8 @@ use OpenApi\Annotations as OA;
  *     version="1.0.0",
  *     description="API for solving the Water Jug Challenge",
  *     @OA\Contact(
- *         email="your-email@example.com",
- *         name="Your Name"
+ *         email="alevinokur@gmail.com",
+ *         name="Alejandro Vinokur"
  *     ),
  *     @OA\License(
  *         name="MIT",
@@ -87,7 +87,7 @@ class JugController extends Controller
             list($currentState, $steps) = $queue->dequeue();
 
             if ($currentState[0] == $measureZ || $currentState[1] == $measureZ) {
-                return $this->formatSolution($steps); // Cambio aquí
+                return $this->formatSolution($steps);
             }
 
             $nextStates = $this->generateNextStates($currentState, $bucketX, $bucketY);
@@ -100,7 +100,6 @@ class JugController extends Controller
             }
         }
 
-        // No solution found
         return 'No Solution';
     }
 
